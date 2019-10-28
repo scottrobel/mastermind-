@@ -5,55 +5,18 @@ module Modes
             new_game(digits,range)
         end    
         def new_game(digits,range)
-            green_numbers = {}
-            white_numbers = {}
-            red_numbers = {}
-            possible_digits_for_each_index = []
-            digits.times do
-                possible_digits_for_each_index.push((1 ..range).to_a)
-            end     
-            indexes_of_unknown_digits = (0..digits).to_a
-            red_numbers
+            green_numbers,white_numbers,red_numbers = {},{},{}
+            possible_digits_for_each_index = MasterMindToolBox::populate_possible_digits(digits, range)
             MasterMindToolBox::print_like_its_typed("welcome to Code Maker mode. In this game You will make the code and the computer will try and guess it")
             secret_code = MasterMindToolBox::get_code_from_user(digits, range)
             MasterMindToolBox::print_like_its_typed("Hmmmmm.....")
             MasterMindToolBox::print_like_its_typed("let me think")
             sleep(2)
             1000.times do
-                computer_guess = possible_digits_for_each_index.map{|possible_digit_array| possible_digit_array.sample}
-                green_numbers.each do |key,value|
-                     computer_guess[key] = value
-                     indexes_of_unknown_digits - [key]
-                     possible_digits_for_each_index[key] = [value]
-                end  
+                computer_guess = MasterMindToolBox::select_randomly_from_possible_digits(possible_digits_for_each_index)
                 hints = MasterMindToolBox::get_hints(computer_guess, secret_code)
-                hints.each_with_index do |hint,index|
-                    case hint
-                    when "G"
-                        green_numbers[index] = computer_guess[index]
-                    when "W"
-                        white_numbers[index] = computer_guess[index]
-                    when "R"
-                        red_numbers[index] = computer_guess[index]
-                    else 
-                    print "invalid hint"
-                    end 
-                end
-                red_numbers.each do |key,value|
-                    possible_digits_for_each_index.map! do |possible_digits|
-                        possible_digits - [value]
-                    end 
-                end 
-                white_numbers.each do |key,value|
-                    possible_digits_for_each_index[key] = possible_digits_for_each_index[key] - [value]
-                    possible_digits_for_each_index.map! do |array|
-                        if(array.include?(value))
-                            array << value
-                            array << value
-                        end
-                        array 
-                    end 
-                end
+                green_numbers, white_numbers, red_numbers = MasterMindToolBox::populate_color_hint_hashes(green_numbers,white_numbers,red_numbers,computer_guess,hints)
+                possible_digits_for_each_index = MasterMindToolBox::update_possible_digits(green_numbers, white_numbers,red_numbers,possible_digits_for_each_index)
                 MasterMindToolBox::puts_hints(computer_guess, hints)
                 if(hints.join("") == "G" * digits)
                     print "I WIN".green + "\n"
@@ -70,17 +33,18 @@ module Modes
         def code_guesser_mode(digits, range, rounds=10)
             secret_code = MasterMindToolBox::create_code(digits, range)
             hints_array = []
-            win = false
+            loss = true
             rounds.times do
                 user_guess = MasterMindToolBox::get_code_from_user(digits, range)
                 hints_array = MasterMindToolBox::get_hints(user_guess ,secret_code)
                 MasterMindToolBox::puts_hints(user_guess, hints_array)
                 if(hints_array.join() == "G" * digits)
                     puts "congrads you won"
+                    loss = false
                     break
                 end   
             end
-            puts "Better luck next time ):" 
+            puts "Better luck next time ):" if(loss)
         end 
         def prompt_user
             MasterMindToolBox::print_like_its_typed("Hello this is mastermind You have to guess a 4 digit automaticly generated code.")

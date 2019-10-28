@@ -21,6 +21,52 @@ module MasterMindToolBox
         end 
         print "\n"
     end 
+    def self.populate_possible_digits(digits, range)
+        possible_digits_for_each_index = []
+        digits.times do
+            possible_digits_for_each_index.push((1 ..range).to_a)
+        end 
+        possible_digits_for_each_index
+    end
+    def self.select_randomly_from_possible_digits(possible_digits_for_each_index)
+        possible_digits_for_each_index.map{|possible_digit_array| possible_digit_array.sample}
+    end 
+    def self.update_possible_digits(green_numbers, white_numbers,red_numbers,possible_digits_for_each_index)
+        green_numbers.each do |key,value|
+            possible_digits_for_each_index[key] = [value]
+       end
+       red_numbers.each do |key,value|
+           possible_digits_for_each_index.map! do |possible_digits|
+               possible_digits - [value]
+           end 
+       end 
+       white_numbers.each do |key,value|
+           possible_digits_for_each_index[key] = possible_digits_for_each_index[key] - [value]
+           # possible_digits_for_each_index.map! do |array|
+           #     if(array.include?(value))
+           #         array << value
+           #         array << value
+           #     end
+           #     array 
+           # end 
+       end
+       return possible_digits_for_each_index
+    end 
+    def self.populate_color_hint_hashes(green_numbers,white_numbers,red_numbers,computer_guess,hints)
+        hints.each_with_index do |hint,index|
+            case hint
+            when "G"
+                green_numbers[index] = computer_guess[index]
+            when "W"
+                white_numbers[index] = computer_guess[index]
+            when "R"
+                red_numbers[index] = computer_guess[index]
+            else 
+            print "error" 
+            end 
+        end
+        return green_numbers,white_numbers,red_numbers
+    end 
     def self.get_hints(user_guess, secret_code)
         hint_array = []
         user_guess.each_with_index do |digit,index|
