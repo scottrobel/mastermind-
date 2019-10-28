@@ -8,6 +8,7 @@ module Modes
             green_numbers,white_numbers,red_numbers = {},{},{}
             possible_digits_for_each_index = MasterMindToolBox::populate_possible_digits(digits, range)
             MasterMindToolBox::print_like_its_typed("welcome to Code Maker mode. In this game You will make the code and the computer will try and guess it")
+            MasterMindToolBox::print_color_meanings
             secret_code = MasterMindToolBox::get_code_from_user(digits, range)
             MasterMindToolBox::print_like_its_typed("Hmmmmm.....")
             MasterMindToolBox::print_like_its_typed("let me think")
@@ -48,9 +49,7 @@ module Modes
         end 
         def prompt_user
             MasterMindToolBox::print_like_its_typed("Hello this is mastermind You have to guess a 4 digit automaticly generated code.")
-            MasterMindToolBox::print_like_its_typed("Green number = Right placment and number")
-            MasterMindToolBox::print_like_its_typed("white number = right number wrong placement")
-            MasterMindToolBox::print_like_its_typed("White Number = wrong number")
+            MasterMindToolBox::print_color_meanings
         end 
     end 
 end 

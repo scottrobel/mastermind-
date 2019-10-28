@@ -1,9 +1,9 @@
 require 'colorize'
 module MasterMindToolBox
     def self.print_like_its_typed(string)
-        time_between_letters = 0.0
-        time_between_words = 0.0
-        time_between_dots = 0.0
+        time_between_letters = 0.02
+        time_between_words = 0.04
+        time_between_dots = 0.06
         word_array = string.split(" ")
         word_array.each do |word|
             letter_array = word.chars
@@ -20,6 +20,11 @@ module MasterMindToolBox
             print " "
         end 
         print "\n"
+    end 
+    def self.print_color_meanings
+        puts "If the number is white the number exists inside the code but the number is not in the right place".white
+        puts "If the number is green It is the right number in the right place".green
+        puts "If the number is red the number is not inside the code".red
     end 
     def self.populate_possible_digits(digits, range)
         possible_digits_for_each_index = []
