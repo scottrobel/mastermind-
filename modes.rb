@@ -44,6 +44,13 @@ module Modes
                 end 
                 white_numbers.each do |key,value|
                     possible_digits_for_each_index[key] = possible_digits_for_each_index[key] - [value]
+                    possible_digits_for_each_index.map! do |array|
+                        if(array.include?(value))
+                            array << value
+                            
+                        end
+                        array 
+                    end 
                 end
                 MasterMindToolBox::puts_hints(computer_guess, hints)
                 if(hints.join("") == "G" * digits)
