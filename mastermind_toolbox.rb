@@ -1,9 +1,9 @@
 require 'colorize'
 module MasterMindToolBox
     def self.print_like_its_typed(string)
-        time_between_letters = 0.05
-        time_between_words = 0.1
-        time_between_dots = 0.2
+        time_between_letters = 0.0
+        time_between_words = 0.0
+        time_between_dots = 0.0
         word_array = string.split(" ")
         word_array.each do |word|
             letter_array = word.chars

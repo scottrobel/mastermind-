@@ -1,7 +1,7 @@
 require './mastermind_toolbox.rb'
 require './modes.rb'
 class MasterMind
-    def initialize(digits=10, range=9)
+    def initialize(digits=5, range=6)
         new_game(digits,range)
     end
     private

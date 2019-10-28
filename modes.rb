@@ -40,14 +40,16 @@ module Modes
                     end 
                 end
                 red_numbers.each do |key,value|
-                    possible_digits_for_each_index[key] = possible_digits_for_each_index[key] - [value]
+                    possible_digits_for_each_index.map! do |possible_digits|
+                        possible_digits - [value]
+                    end 
                 end 
                 white_numbers.each do |key,value|
                     possible_digits_for_each_index[key] = possible_digits_for_each_index[key] - [value]
                     possible_digits_for_each_index.map! do |array|
                         if(array.include?(value))
                             array << value
-                            
+                            array << value
                         end
                         array 
                     end 
